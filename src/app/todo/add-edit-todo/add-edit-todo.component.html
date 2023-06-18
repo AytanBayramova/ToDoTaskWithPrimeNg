@@ -1,0 +1,30 @@
+<p-dialog 
+header="{{ modalType }}Task"
+[(visible)]="displayAddEditModal" 
+[modal]="true" 
+[style]="{ width: '50vw' }"
+[draggable]="false" 
+[resizable]="false" 
+ (onHide)="closeModal"
+ >
+    
+   
+    <form [formGroup]="todoForm" class="todo-form"> 
+        <div class="field">
+            <label class="block" for="todo">To do task</label>
+            <input type="text" id="todo" formControlName="todo" pInputText/>
+        </div>
+        <div class="field">
+            <label class="block" for="whattimeisit" >What time is it?</label>
+           <input class="block" id="whattimeisit" formControlName="whattimeisit" type="time"/>
+
+        </div>
+        
+    </form>
+    <ng-template pTemplate="footer">
+      
+        <p-button  (click)="closeModal()" label="Cancel" styleClass="p-button-text"></p-button>
+        <p-button  (click)="addEditTask()" label="{{modalType}}" styleClass="p-button-text" ></p-button>
+
+    </ng-template>
+</p-dialog>

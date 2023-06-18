@@ -1,0 +1,45 @@
+<div style="color: blue;" class="flex justify-content-between">
+<h2>To do App</h2>
+</div>
+<p-table [value]="todos" [paginator]="true" [rows]=5>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Tasks</th>
+            <th>What time is it?</th>
+            <th>Edit or delete action</th>
+            <p-button label="Add task" (click)="showAddModal()"></p-button>
+            <th></th>
+
+
+           
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-todo>
+        <tr>
+            <td>{{ todo.todo }}</td>
+            <td>{{ todo.whattimeisit }}</td>
+            <td>{{ todo.editordelete }}</td>
+            <td>
+                <button
+                pButton
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-success mr-2"
+                (click)="showEditModal(todo)"  
+               ></button> 
+               <button pButton icon="pi pi-trash" class="p-button-rounded p-button-wairning" (click)="deleteTodo(todo)"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<app-add-edit-todo
+ [displayAddEditModal]="displayAddEditModal"
+ [selectedTodo]="selectedTodo"
+ (clickClose)="hideAddModal($event)"
+ (clickAddEdit)="saveorUpdateTodoList($event)"
+></app-add-edit-todo>
+
+<p-confirmDialog header="Delete confirmation" ></p-confirmDialog>
+<p-toast position="bottom-right" ></p-toast>
+
+
