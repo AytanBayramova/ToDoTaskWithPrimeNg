@@ -13,10 +13,13 @@ header="{{ modalType }}Task"
         <div class="field">
             <label class="block" for="todo">To do task</label>
             <input type="text" id="todo" formControlName="todo" pInputText/>
+                      <small class="p-error block" *ngIf="todoForm.controls['todo'].invalid && todoForm.controls['todo'].dirty">Field is required</small>
+
         </div>
         <div class="field">
             <label class="block" for="whattimeisit" >What time is it?</label>
            <input class="block" id="whattimeisit" formControlName="whattimeisit" type="time"/>
+             <small class="p-error block" *ngIf="todoForm.controls['whattimeisit'].invalid && todoForm.controls['whattimeisit'].dirty">Field is required</small>
 
         </div>
         
