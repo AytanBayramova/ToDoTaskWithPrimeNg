@@ -1,10 +1,16 @@
 <div style="color: blue;" class="flex justify-content-between">
 <h2>To do App</h2>
 </div>
-<p-table [value]="todos" [paginator]="true" [rows]=5>
+<p-table  [value]="todos"  [paginator]="true" [rows]=5>
+ 
+
+    
     <ng-template pTemplate="header">
         <tr>
-            <th>Tasks</th>
+            
+        </tr>
+        <tr>
+            <th pSorttableColumn="todo">Tasks </th>
             <th>What time is it?</th>
             <th>Edit or delete action</th>
             <p-button label="Add task" (click)="showAddModal()"></p-button>
@@ -15,15 +21,18 @@
         <tr>
             <td>{{ todo.todo }}</td>
             <td>{{ todo.whattimeisit }}</td>
-            <td>{{ todo.editordelete }}</td>
             <td>
-                <button
-                pButton
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-success mr-2"
-                (click)="showEditModal(todo)"  
-               ></button> 
-               <button pButton icon="pi pi-trash" class="p-button-rounded p-button-wairning" (click)="deleteTodo(todo)"></button>
+<p-dropdown placeholder="select actions" [options]="actions" [(ngModel)]="selectedAction[todo.id]" (onChange)="onActionChange($event.value, todo)">
+    <ng-template let-item pTemplate="selectedItem">
+      <div class="p-flex p-align-center">
+        <i [ngClass]="item.icon" class="p-mr-2"></i>
+        <span *ngIf="selectedAction !== 'select'">{{ item.label }}</span>
+        <span *ngIf="selectedAction === 'select'">Select action</span>
+      </div>
+    </ng-template>
+  </p-dropdown>
+
+  
             </td>
         </tr>
     </ng-template>
@@ -32,7 +41,7 @@
 <app-add-edit-todo
  [displayAddEditModal]="displayAddEditModal"
  [selectedTodo]="selectedTodo"
- (clickClose)="hideAddModal($event)"
+ (clickClose)="closeAddModal()"
  (clickAddEdit)="saveorUpdateTodoList($event)"
 ></app-add-edit-todo>
 

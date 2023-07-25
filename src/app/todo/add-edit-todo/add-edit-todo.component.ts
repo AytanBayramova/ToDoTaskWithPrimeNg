@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TodoService } from '../todo.service';
 import {MessageService} from 'primeng/api';
 
@@ -11,14 +11,21 @@ import {MessageService} from 'primeng/api';
 export class AddEditTodoComponent implements OnInit, OnChanges{
   @Input () displayAddEditModal: boolean=true;
   @Input () selectedTodo: any =null;
-  @Output() clickClose: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() clickAddEdit: EventEmitter<any> = new EventEmitter<any>();
+  @Output() clickClose: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clickAddEdit: EventEmitter<any> = new EventEmitter();
   modalType = "Add";
 
-todoForm = this.fb.group({
-todo: ["", Validators.required],
-  whattimeisit:["",Validators.required],
-  editordelete: ["", Validators.required]
+
+
+  closeModal(): void {
+    this.clickClose.emit();
+    this.todoForm.reset();
+  }
+  
+public todoForm = new FormGroup({
+todo: new FormControl ('',[ Validators.required, Validators.minLength(1)]),
+  whattimeisit:  new FormControl ('', Validators.required),
+  
 });
   constructor(private fb : FormBuilder, private todoService: TodoService, private messageService: MessageService){}
   ngOnInit():void{
@@ -35,10 +42,9 @@ todo: ["", Validators.required],
     }
   }
 
-  closeModal(){
-    this.clickClose.emit(true);
-    this.todoForm.reset();
-  }
+  
+
+ 
 
   addEditTask(){
     
@@ -54,9 +60,7 @@ todo: ["", Validators.required],
      console.log('Error occured');
       
      }
-      
-    
-     
+
     )
   }
 

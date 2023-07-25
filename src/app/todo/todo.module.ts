@@ -9,20 +9,25 @@ import { ToastModule } from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api'
-
-
+import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
+import { TreeTableModule } from 'primeng/treetable';
 @NgModule({
   declarations: [
-    TodoComponent
+    TodoComponent,
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     TableModule,
     ButtonModule,
+    FormsModule,
     ToastModule,
     AddEditTodoModule,
     ConfirmDialogModule,
+    DropdownModule,
+    TreeTableModule
+ 
    
 
 

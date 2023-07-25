@@ -1,8 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TodoService } from './todo.service';
 import { Todo } from './todo';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { Dialog } from 'primeng/dialog'; // Correct import statement
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-todo',
@@ -10,54 +12,87 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./todo.component.css']
 })
 export class TodoComponent implements OnInit, OnDestroy{
-
+  @ViewChild('addEditDialog') dataTable!: Table;
   todos: Todo[] = [];
+  actions: any[] | undefined ;
+  selectedAction: any = null;
+  selectedTodo: Todo | null = null;
+
+ 
   displayAddEditModal = false;
-  selectedTodo: any = null;
   subscriptions: Subscription [] = [];
   todoSubscription: Subscription = new Subscription;
-
+  
 constructor(private todoService: TodoService,
   private confirmationService: ConfirmationService,
   private messageService: MessageService){}
 
 ngOnInit(): void{
 this.getTodoList();
+this.actions = [
+
+  { label: 'Edit', value: 'edit', icon: 'pi pi-pencil' },
+  { label: 'Delete', value: 'delete', icon: 'pi pi-trash' }
+];
+this.selectedAction = this.actions[0]; // Set 'Edit' as the default action
+
 }
 
-getTodoList(){
- this.todoSubscription= this.todoService.getTodo().subscribe(
-    response => {
-      this.todos = response;
-    }
-  );
-  this.subscriptions.push(this.todoSubscription)
+onActionChange(action: string, todo: Todo) {
+  this.selectedAction[todo.id] = action;
+  
+  if (action === 'edit') {
+    this.showEditModal(todo);
+  } else if (action === 'delete') {
+    this.deleteTodo(todo);
+  }
+
+  this.displayAddEditModal = false;
+  this.selectedTodo = null;
 }
 
-showAddModal(){
-this.displayAddEditModal = true;
-this.selectedTodo = null;
+getTodoList() {
+  this.todoService.getTodo().subscribe((response) => {
+    this.todos = response;
+    this.dataTable.reset();
+  });
 }
 
 
-hideAddModal(isClosed: boolean){
+hideAddModal(isClosed: boolean): void {
   this.displayAddEditModal = !isClosed;
+  if (!isClosed) {
+    this.selectedTodo = null; // Reset selectedTodo when the modal is closed
+  }
 }
-
-saveorUpdateTodoList(newData: any){
-  if(this.selectedTodo && newData.id === this.selectedTodo.id){
-    const todoIndex = this.todos.findIndex(data => data.id === newData.id);
-   this.todos[todoIndex]=newData;
- } else {
+closeAddModal(): void {
+  this.displayAddEditModal = false;
+  this.selectedTodo = null;
+}
+saveorUpdateTodoList(newData: any) {
+  if (this.selectedTodo && newData.id === this.selectedTodo.id) {
+    const todoIndex = this.todos.findIndex((data) => data.id === newData.id);
+    this.todos[todoIndex] = newData;
+  } else {
     this.todos.unshift(newData);
   }
-  
- // this.getTodoList();
+  this.displayAddEditModal = false;
+  this.selectedTodo = null;
 }
 
+
 showEditModal(todo: Todo){
-this.displayAddEditModal=true
+this.displayAddEditModal=true;
 this.selectedTodo = todo;
+}
+showAddModal(): void {
+  this.selectedTodo = null;
+  this.displayAddEditModal = true;
+}
+
+onCloseModal(): void {
+  this.displayAddEditModal = false;
+  this.selectedTodo = null;
 }
 
 deleteTodo(todo:Todo){
@@ -82,6 +117,7 @@ deleteTodo(todo:Todo){
 }
 
 ngOnDestroy(): void {
-  this.subscriptions.forEach(sub => sub.unsubscribe());
+  // Unsubscribe from the todoSubscription to prevent memory leaks
+  this.todoSubscription.unsubscribe();
 }
 }
