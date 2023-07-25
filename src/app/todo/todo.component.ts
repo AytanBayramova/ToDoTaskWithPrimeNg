@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { Dialog } from 'primeng/dialog'; // Correct import statement
 import { Table } from 'primeng/table';
 
+
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
@@ -19,9 +20,14 @@ export class TodoComponent implements OnInit, OnDestroy{
   selectedTodo: Todo | null = null;
   searchQuery: string = '';
   filteredTodos: Todo[] = []; // Add a new array to store the filtered todos
+  currentPage = 0;
+  rowsPerPage = 5;
+
 
   sortField: string = 'todo';
   sortOrder: number = 1;
+
+
 
   displayAddEditModal = false;
   subscriptions: Subscription [] = [];
@@ -43,8 +49,7 @@ this.actions = [
 
 onActionChange(action: string, todo: Todo) {
   this.selectedAction[todo.id] = action;
-  this.displayAddEditModal = false;
-  this.selectedTodo = null;
+
   if (action === 'edit') {
     this.showEditModal(todo);
   } else if (action === 'delete') {

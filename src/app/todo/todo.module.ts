@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { TreeTableModule } from 'primeng/treetable';
 import { InputTextModule } from 'primeng/inputtext'; // Import InputTextModule
+import { PaginatorModule } from 'primeng/paginator';
 @NgModule({
   declarations: [
     TodoComponent,
@@ -28,7 +29,8 @@ import { InputTextModule } from 'primeng/inputtext'; // Import InputTextModule
     ConfirmDialogModule,
     DropdownModule,
     TreeTableModule,
-    InputTextModule
+    InputTextModule,
+    PaginatorModule
  
    
 
