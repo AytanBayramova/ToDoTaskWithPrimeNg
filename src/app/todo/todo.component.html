@@ -1,16 +1,21 @@
 <div style="color: blue;" class="flex justify-content-between">
 <h2>To do App</h2>
 </div>
-<p-table  [value]="todos"  [paginator]="true" [rows]=5>
- 
 
+<p-inputText type="text" [(ngModel)]="searchQuery" (input)="onSearch($event)" placeholder="Search"></p-inputText>
+
+<p-table #todotable [value]="todos"  [paginator]="true" [rows]=5>
+ 
+    <ng-template pTemplate="caption">
+        <div class="table-header">
+          List of tasks
+        </div>
+      </ng-template>
     
     <ng-template pTemplate="header">
+        
         <tr>
-            
-        </tr>
-        <tr>
-            <th pSorttableColumn="todo">Tasks </th>
+            <th pSorttableColumn="todo">Tasks <p-sortIcon field="todo"></p-sortIcon></th>
             <th>What time is it?</th>
             <th>Edit or delete action</th>
             <p-button label="Add task" (click)="showAddModal()"></p-button>

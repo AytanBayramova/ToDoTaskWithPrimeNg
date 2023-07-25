@@ -17,6 +17,7 @@ export class TodoComponent implements OnInit, OnDestroy{
   actions: any[] | undefined ;
   selectedAction: any = null;
   selectedTodo: Todo | null = null;
+  searchQuery: string = '';
 
  
   displayAddEditModal = false;
@@ -56,6 +57,12 @@ getTodoList() {
     this.todos = response;
     this.dataTable.reset();
   });
+}
+
+onSearch(event: Event): void {
+  const searchValue = (event.target as HTMLInputElement).value;
+  this.searchQuery = searchValue;
+  this.dataTable.filterGlobal(this.searchQuery, 'contains');
 }
 
 
