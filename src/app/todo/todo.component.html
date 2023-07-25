@@ -2,20 +2,14 @@
 <h2>To do App</h2>
 </div>
 
-<p-inputText type="text" [(ngModel)]="searchQuery" (input)="onSearch($event)" placeholder="Search"></p-inputText>
 
-<p-table #todotable [value]="todos"  [paginator]="true" [rows]=5>
+<p-table #todotable [value]="todos" [value]="filteredTodos" [paginator]="true" [rows]=5>
  
-    <ng-template pTemplate="caption">
-        <div class="table-header">
-          List of tasks
-        </div>
-      </ng-template>
-    
+   
     <ng-template pTemplate="header">
         
         <tr>
-            <th pSorttableColumn="todo">Tasks <p-sortIcon field="todo"></p-sortIcon></th>
+            <th pSorttableColumn="todo">Tasks </th>
             <th>What time is it?</th>
             <th>Edit or delete action</th>
             <p-button label="Add task" (click)="showAddModal()"></p-button>
@@ -31,8 +25,8 @@
     <ng-template let-item pTemplate="selectedItem">
       <div class="p-flex p-align-center">
         <i [ngClass]="item.icon" class="p-mr-2"></i>
-        <span *ngIf="selectedAction !== 'select'">{{ item.label }}</span>
-        <span *ngIf="selectedAction === 'select'">Select action</span>
+        <span *ngIf="selectedAction [todo.id]!== 'select'">{{ item.label }}</span>
+        <span *ngIf="selectedAction [todo.id] === 'select'">Select action</span>
       </div>
     </ng-template>
   </p-dropdown>

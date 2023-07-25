@@ -14,12 +14,15 @@ import { Table } from 'primeng/table';
 export class TodoComponent implements OnInit, OnDestroy{
   @ViewChild('addEditDialog') dataTable!: Table;
   todos: Todo[] = [];
-  actions: any[] | undefined ;
-  selectedAction: any = null;
+  actions: any[] =[] ;
+  selectedAction: { [key: number]: string } = {};
   selectedTodo: Todo | null = null;
   searchQuery: string = '';
+  filteredTodos: Todo[] = []; // Add a new array to store the filtered todos
 
- 
+  sortField: string = 'todo';
+  sortOrder: number = 1;
+
   displayAddEditModal = false;
   subscriptions: Subscription [] = [];
   todoSubscription: Subscription = new Subscription;
@@ -35,35 +38,57 @@ this.actions = [
   { label: 'Edit', value: 'edit', icon: 'pi pi-pencil' },
   { label: 'Delete', value: 'delete', icon: 'pi pi-trash' }
 ];
-this.selectedAction = this.actions[0]; // Set 'Edit' as the default action
 
 }
 
 onActionChange(action: string, todo: Todo) {
   this.selectedAction[todo.id] = action;
-  
+  this.displayAddEditModal = false;
+  this.selectedTodo = null;
   if (action === 'edit') {
     this.showEditModal(todo);
   } else if (action === 'delete') {
     this.deleteTodo(todo);
   }
 
-  this.displayAddEditModal = false;
-  this.selectedTodo = null;
+ 
 }
 
-getTodoList() {
-  this.todoService.getTodo().subscribe((response) => {
-    this.todos = response;
-    this.dataTable.reset();
-  });
-}
+
+
+ getTodoList() {
+    this.todoSubscription = this.todoService.getTodo().subscribe((response) => {
+      this.todos = response;
+      this.filteredTodos = [...this.todos]; // Initially, filteredTodos will have all todos
+      if (this.dataTable) {
+        this.dataTable.reset();
+      }
+    });
+    this.subscriptions.push(this.todoSubscription);
+
+  }
 
 onSearch(event: Event): void {
   const searchValue = (event.target as HTMLInputElement).value;
-  this.searchQuery = searchValue;
-  this.dataTable.filterGlobal(this.searchQuery, 'contains');
-}
+  this.searchQuery = searchValue.trim().toLowerCase(); // Convert to lowercase for case-insensitive search
+  if (this.searchQuery) {
+    // If there's a search query, filter the todos based on the task name
+    this.filteredTodos = this.todos.filter(
+      (todo) => todo.todo.toLowerCase().includes(this.searchQuery)
+    );
+  } else {
+    // If search query is empty, show all todos
+    this.filteredTodos = [...this.todos];
+  }
+  if (this.dataTable) {
+    this.dataTable.reset();
+    this.dataTable.value = this.filteredTodos; // Assign the filteredTodos to the data table
+  }
+// Call the sort function after filtering
+
+  }
+
+ 
 
 
 hideAddModal(isClosed: boolean): void {
@@ -125,6 +150,6 @@ deleteTodo(todo:Todo){
 
 ngOnDestroy(): void {
   // Unsubscribe from the todoSubscription to prevent memory leaks
-  this.todoSubscription.unsubscribe();
+  this.subscriptions.forEach((sub) => sub.unsubscribe());
 }
 }

@@ -12,6 +12,7 @@ import {ConfirmationService} from 'primeng/api'
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { TreeTableModule } from 'primeng/treetable';
+import { InputTextModule } from 'primeng/inputtext'; // Import InputTextModule
 @NgModule({
   declarations: [
     TodoComponent,
@@ -26,7 +27,8 @@ import { TreeTableModule } from 'primeng/treetable';
     AddEditTodoModule,
     ConfirmDialogModule,
     DropdownModule,
-    TreeTableModule
+    TreeTableModule,
+    InputTextModule
  
    
 
