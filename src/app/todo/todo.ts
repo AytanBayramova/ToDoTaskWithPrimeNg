@@ -3,6 +3,7 @@ export interface Todo {
     id: number;
     task: string;
     whattimeisit: string;
+    statuss: string;
 }
 
 

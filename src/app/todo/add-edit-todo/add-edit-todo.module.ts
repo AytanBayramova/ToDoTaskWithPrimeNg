@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ReactiveFormsModule,
     InputTextModule,
     InputNumberModule,
+    RadioButtonModule
    
   ],
   exports: [AddEditTodoComponent]

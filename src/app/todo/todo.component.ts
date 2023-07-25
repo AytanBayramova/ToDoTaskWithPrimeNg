@@ -20,8 +20,8 @@ export class TodoComponent implements OnInit, OnDestroy{
   selectedTodo: Todo | null = null;
   searchQuery: string = '';
   filteredTodos: Todo[] = []; // Add a new array to store the filtered todos
-  currentPage = 0;
-  rowsPerPage = 5;
+  selectedStatus: string = 'todo'; // Set the default status as 'todo'
+
 
 
   sortField: string = 'todo';
@@ -55,19 +55,22 @@ onActionChange(action: string, todo: Todo) {
   } else if (action === 'delete') {
     this.deleteTodo(todo);
   }
-
+  const savedStatus = localStorage.getItem('selectedStatus');
+    if (savedStatus) {
+      this.selectedStatus = savedStatus;
+    }
  
 }
 
+totalRecords: number = 0;
 
 
  getTodoList() {
     this.todoSubscription = this.todoService.getTodo().subscribe((response) => {
       this.todos = response;
-      this.filteredTodos = [...this.todos]; // Initially, filteredTodos will have all todos
-      if (this.dataTable) {
-        this.dataTable.reset();
-      }
+      this.filteredTodos = this.filterTodos(); // Initially, filteredTodos will have all todos
+      this.totalRecords = this.filteredTodos.length; // Set the totalRecords to the length of filteredTodos
+      this.updateDataTable();
     });
     this.subscriptions.push(this.todoSubscription);
 
@@ -85,6 +88,9 @@ onSearch(event: Event): void {
     // If search query is empty, show all todos
     this.filteredTodos = [...this.todos];
   }
+  this.totalRecords = this.filteredTodos.length; // Set the totalRecords to the length of filteredTodos
+  this.updateDataTable(); // Update the dataTable with the filteredTodos
+
   if (this.dataTable) {
     this.dataTable.reset();
     this.dataTable.value = this.filteredTodos; // Assign the filteredTodos to the data table
@@ -93,8 +99,16 @@ onSearch(event: Event): void {
 
   }
 
- 
-
+  filterTodos(): Todo[] {
+    if (this.searchQuery) {
+      return this.todos.filter((todo) =>
+        todo.todo.toLowerCase().includes(this.searchQuery)
+      );
+    } else {
+      return this.todos;
+    }
+  }
+  
 
 hideAddModal(isClosed: boolean): void {
   this.displayAddEditModal = !isClosed;
@@ -117,11 +131,25 @@ saveorUpdateTodoList(newData: any) {
   this.selectedTodo = null;
 }
 
+first: number = 0;
+
+
+updateDataTable() {
+  if (this.dataTable) {
+    this.dataTable.reset();
+    this.dataTable.value = this.filteredTodos;
+    this.first = 0; // Reset the first row index to 0
+  }
+}
 
 showEditModal(todo: Todo){
 this.displayAddEditModal=true;
 this.selectedTodo = todo;
+
+
 }
+
+
 showAddModal(): void {
   this.selectedTodo = null;
   this.displayAddEditModal = true;
@@ -152,6 +180,8 @@ deleteTodo(todo:Todo){
 });
 
 }
+
+
 
 ngOnDestroy(): void {
   // Unsubscribe from the todoSubscription to prevent memory leaks

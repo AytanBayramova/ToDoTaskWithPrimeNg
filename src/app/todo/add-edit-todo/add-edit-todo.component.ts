@@ -25,7 +25,7 @@ export class AddEditTodoComponent implements OnInit, OnChanges{
 public todoForm = new FormGroup({
 todo: new FormControl ('',[ Validators.required, Validators.minLength(1)]),
   whattimeisit:  new FormControl ('', Validators.required),
-  
+  statuss: new FormControl ,
 });
   constructor(private fb : FormBuilder, private todoService: TodoService, private messageService: MessageService){}
   ngOnInit():void{

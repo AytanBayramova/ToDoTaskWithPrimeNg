@@ -14,6 +14,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TreeTableModule } from 'primeng/treetable';
 import { InputTextModule } from 'primeng/inputtext'; // Import InputTextModule
 import { PaginatorModule } from 'primeng/paginator';
+import { RadioButtonModule } from 'primeng/radiobutton';
 @NgModule({
   declarations: [
     TodoComponent,
@@ -30,7 +31,8 @@ import { PaginatorModule } from 'primeng/paginator';
     DropdownModule,
     TreeTableModule,
     InputTextModule,
-    PaginatorModule
+    PaginatorModule,
+    RadioButtonModule
  
    
 

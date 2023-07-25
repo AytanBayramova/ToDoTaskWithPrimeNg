@@ -14,7 +14,9 @@
     />
   </div>
 
-<p-table #todotable [value]="todos" [value]="filteredTodos" [paginator]="true" [rows]="5">
+<p-table #todotable [value]="todos" [value]="filteredTodos" [paginator]="true" [rows]="5"  [totalRecords]="totalRecords" [first]="first"
+[pageLinks]="3"
+>
  
    
     <ng-template pTemplate="header">
@@ -23,8 +25,8 @@
             <th pSorttableColumn="todo">Tasks </th>
             <th>What time is it?</th>
             <th>Edit or delete action</th>
+           <th>Status</th>
             <p-button label="Add task" (click)="showAddModal()"></p-button>
-            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-todo>
@@ -43,6 +45,18 @@
   </p-dropdown>
 
   
+            </td>
+            <td> {{todo.statuss}}
+                <form>
+                    <input type="radio" id="todo" name="status" value="todo">
+                    <label for="todo">Todo</label><br>
+            
+                    <input type="radio" id="inProgress" name="status" value="in_progress">
+                    <label for="inProgress">In Progress</label><br>
+            
+                    <input type="radio" id="done" name="status" value="done">
+                    <label for="done">Done</label><br>
+                </form>
             </td>
         </tr>
     </ng-template>
