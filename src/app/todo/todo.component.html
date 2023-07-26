@@ -1,29 +1,62 @@
 <div style="color: blue;" class="flex justify-content-between">
 <h2>To do App</h2>
 </div>
-<p-table [value]="todos" [paginator]="true" [rows]=5>
+<div class="p-inputgroup">
+    <span class="p-inputgroup-addon">
+      <i style="margin-right: 10px;" class="pi pi-search"></i>
+    </span>
+    <input
+      pInputText
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch($event)"
+      placeholder="Search"
+    />
+  </div>
+
+<p-table #todotable [value]="todos" [value]="filteredTodos" [paginator]="true" [rows]="5"  [totalRecords]="totalRecords" [first]="first"
+[pageLinks]="3"
+>
+ 
+   
     <ng-template pTemplate="header">
+        
         <tr>
-            <th>Tasks</th>
+            <th pSorttableColumn="todo">Tasks </th>
             <th>What time is it?</th>
             <th>Edit or delete action</th>
+           <th>Status</th>
             <p-button label="Add task" (click)="showAddModal()"></p-button>
-            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-todo>
         <tr>
             <td>{{ todo.todo }}</td>
             <td>{{ todo.whattimeisit }}</td>
-            <td>{{ todo.editordelete }}</td>
             <td>
-                <button
-                pButton
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-success mr-2"
-                (click)="showEditModal(todo)"  
-               ></button> 
-               <button pButton icon="pi pi-trash" class="p-button-rounded p-button-wairning" (click)="deleteTodo(todo)"></button>
+<p-dropdown placeholder="select actions" [options]="actions" [(ngModel)]="selectedAction[todo.id]" (onChange)="onActionChange($event.value, todo)">
+    <ng-template let-item pTemplate="selectedItem">
+      <div class="p-flex p-align-center">
+        <i [ngClass]="item.icon" class="p-mr-2"></i>
+        <span *ngIf="selectedAction [todo.id]!== 'select'">{{ item.label }}</span>
+        <span *ngIf="selectedAction [todo.id] === 'select'">Select action</span>
+      </div>
+    </ng-template>
+  </p-dropdown>
+
+  
+            </td>
+            <td> {{todo.statuss}}
+                <form>
+                    <input type="radio" id="todo" name="status" value="todo">
+                    <label for="todo">Todo</label><br>
+            
+                    <input type="radio" id="inProgress" name="status" value="in_progress">
+                    <label for="inProgress">In Progress</label><br>
+            
+                    <input type="radio" id="done" name="status" value="done">
+                    <label for="done">Done</label><br>
+                </form>
             </td>
         </tr>
     </ng-template>
@@ -32,11 +65,10 @@
 <app-add-edit-todo
  [displayAddEditModal]="displayAddEditModal"
  [selectedTodo]="selectedTodo"
- (clickClose)="hideAddModal($event)"
+ (clickClose)="closeAddModal()"
  (clickAddEdit)="saveorUpdateTodoList($event)"
 ></app-add-edit-todo>
 
 <p-confirmDialog header="Delete confirmation" ></p-confirmDialog>
 <p-toast position="bottom-right" ></p-toast>
-
 
