@@ -17,8 +17,6 @@
 <p-table #todotable [value]="todos" [value]="filteredTodos" [paginator]="true" [rows]="5"  [totalRecords]="totalRecords" [first]="first"
 [pageLinks]="3"
 >
- 
-   
     <ng-template pTemplate="header">
         
         <tr>
@@ -44,7 +42,6 @@
     </ng-template>
   </p-dropdown>
 
-  
             </td>
             <td> {{todo.statuss}}
                 <form>
