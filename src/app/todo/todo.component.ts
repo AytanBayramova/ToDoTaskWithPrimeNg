@@ -5,8 +5,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { Dialog } from 'primeng/dialog'; // Correct import statement
 import { Table } from 'primeng/table';
-
-
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
@@ -21,14 +19,8 @@ export class TodoComponent implements OnInit, OnDestroy{
   searchQuery: string = '';
   filteredTodos: Todo[] = []; // Add a new array to store the filtered todos
   selectedStatus: string = 'todo'; // Set the default status as 'todo'
-
-
-
   sortField: string = 'todo';
   sortOrder: number = 1;
-
-
-
   displayAddEditModal = false;
   subscriptions: Subscription [] = [];
   todoSubscription: Subscription = new Subscription;
@@ -59,12 +51,9 @@ onActionChange(action: string, todo: Todo) {
     if (savedStatus) {
       this.selectedStatus = savedStatus;
     }
- 
 }
 
 totalRecords: number = 0;
-
-
  getTodoList() {
     this.todoSubscription = this.todoService.getTodo().subscribe((response) => {
       this.todos = response;
