@@ -8,7 +8,6 @@ header="{{ modalType }}Task"
  (onHide)="closeModal"
  >
     
-   
     <form [formGroup]="todoForm" class="todo-form"> 
         <div class="field" >
             <label class="block" for="todo">To do task</label>
@@ -20,12 +19,8 @@ header="{{ modalType }}Task"
             <label class="block" for="whattimeisit" >What time is it?</label>
            <input class="block" id="whattimeisit" formControlName="whattimeisit" type="time"/>
              <small class="p-error block" *ngIf="todoForm.get('whattimeisit')?.invalid && todoForm.get('whattimeisit')?.dirty">Field is required</small>
-
         </div>
 
-      
-
-        
     </form>
     <ng-template pTemplate="footer">
       
