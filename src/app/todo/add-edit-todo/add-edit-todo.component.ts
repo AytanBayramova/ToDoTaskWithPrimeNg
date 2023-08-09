@@ -15,8 +15,6 @@ export class AddEditTodoComponent implements OnInit, OnChanges{
   @Output() clickAddEdit: EventEmitter<any> = new EventEmitter();
   modalType = "Add";
 
-
-
   closeModal(): void {
     this.clickClose.emit();
     this.todoForm.reset();
@@ -41,10 +39,6 @@ todo: new FormControl ('',[ Validators.required, Validators.minLength(1)]),
       this.modalType = 'Add';
     }
   }
-
-  
-
- 
 
   addEditTask(){
     
